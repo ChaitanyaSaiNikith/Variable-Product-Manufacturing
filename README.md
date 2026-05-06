@@ -17,7 +17,7 @@ The system integrates three UR5 robots (Rosie, Mary, Edie), two Haas Mini Mills 
 ## Products
 
 ![Short and Tall Hook Products](images/Product_Tall_Short.JPG)
-*Left: Short Hook (Product A) — Right: Tall Hook (Product B)*
+*Left: Tall Hook (Product B) — Right: Short Hook (Product B)*
 
 Each product consists of:
 - A CNC-machined HDPE **lid** (Haas Mini Mill)
