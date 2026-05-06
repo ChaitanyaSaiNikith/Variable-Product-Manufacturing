@@ -225,10 +225,10 @@ Queue and run all four BUMES programs simultaneously:
 
 | Script | Stations | Produces | Pallet | Stock |
 |--------|----------|----------|--------|-------|
-| ShortLid | 3 → 1 | Lid A (short) | invA / agvA | T (Tier 1) |
-| ShortBody | 4 → 1 | Body A (short) + Assembly | invB / agvB | V (Tier 1) |
-| TallLid | 3 → 1 | Lid B (tall) | invC / agvC | T (Tier 3) |
-| TallBody | 4 → 1 | Body B (tall) + Assembly | invD / agvD | V (Tier 3) |
+| ShortLid | 3 → 1 | Lid A (short) + Assembly| invA / agvA | T (Tier 1) |
+| ShortBody | 4 → 1 | Body A (short)  | invB / agvB | V (Tier 1) |
+| TallLid | 3 → 1 | Lid B (tall) + Assembly | invC / agvC | T (Tier 3) |
+| TallBody | 4 → 1 | Body B (tall)  | invD / agvD | V (Tier 3) |
 
 Assembly is triggered by **ShortBody** and **TallBody** after the vision system confirms the lid type. Rosie performs the final assembly and delivers the product to the output box.
 
