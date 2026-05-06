@@ -2,7 +2,6 @@
 
 **Course:** ME500: Advanced Manufacturing — Spring 2026  
 **Team:** Chris Daub, Riley Hubscher, Mukhamed Kerimkul, Bramasto Prasojo, and Chaitanya Sai Nikith Rambha  
-**Institution:** Advanced Design and Manufacturing Lab (ADML)
 
 ---
 
