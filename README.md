@@ -155,6 +155,7 @@ Variable-Product-Manufacturing/
 │   ├── Pallet_Peg_location.JPG
 │   └── Cam_Scan_Peg_location.JPG
 │
+├── ME 500 Final Video Demo .mp4
 ├── THU PM FINAL Project Update.pptx
 └── README.md
 ```
@@ -293,7 +294,8 @@ Print time: ~20 minutes per hook.
 - Full list in `Vision/requirements.txt`
 
 ---
-
+## Video Demo Drive Link
+https://drive.google.com/file/d/13W8RlCqD1YdOIOgoTWztGpp7VzRbSrjd/view?usp=sharing
 ## Acknowledgments
 
 Developed as part of ME500: Advanced Manufacturing, Spring 2026, Boston University.  
