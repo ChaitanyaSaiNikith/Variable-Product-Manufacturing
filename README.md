@@ -298,4 +298,4 @@ Print time: ~20 minutes per hook.
 ## Acknowledgments
 
 Developed as part of ME500: Advanced Manufacturing, Spring 2026, Boston University.  
-Special thanks to the ADML staff for lab support and infrastructure.
+Special thanks to professor Boley and to the ADML staff Adam and Caroline for lab support and infrastructure.
