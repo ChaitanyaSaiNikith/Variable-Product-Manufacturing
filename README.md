@@ -2,7 +2,6 @@
 
 **Course:** ME500: Advanced Manufacturing — Spring 2026  
 **Team:** Chris Daub, Riley Hubscher, Mukhamed Kerimkul, Bramasto Prasojo, and Chaitanya Sai Nikith Rambha  
-**Institution:** Advanced Design and Manufacturing Lab (ADML)
 
 ---
 
@@ -17,7 +16,7 @@ The system integrates three UR5 robots (Rosie, Mary, Edie), two Haas Mini Mills 
 ## Products
 
 ![Short and Tall Hook Products](images/Product_Tall_Short.JPG)
-*Left: Short Hook (Product A) — Right: Tall Hook (Product B)*
+*Left: Tall Hook (Product B) — Right: Short Hook (Product B)*
 
 Each product consists of:
 - A CNC-machined HDPE **lid** (Haas Mini Mill)
@@ -298,4 +297,4 @@ Print time: ~20 minutes per hook.
 ## Acknowledgments
 
 Developed as part of ME500: Advanced Manufacturing, Spring 2026, Boston University.  
-Special thanks to the ADML staff for lab support and infrastructure.
+Special thanks to professor Boley and to the ADML staff Adam and Caroline for lab support and infrastructure.
