@@ -1,0 +1,63 @@
+//Create a body from raw material
+
+//Initialize System
+resourceSeize('invB')
+resourceSeize('B')
+
+//At this point, the next operation may enter the system
+startupTasksComplete()
+
+//Collect raw material and manufacture
+resourceSeize('Edie')
+urDashboard('Edie', 'THU_530PM/Final/gravityFeederV.urp')
+//load short
+urDashboard('Edie', 'THU_530PM/Final/Short_StockV_LoadMill_MakePart_Tier1.urp')
+resourceRelease('Edie')
+
+//At this point, the next operation may enter the system
+startupTasksComplete()
+
+//Move Empty Pallet to Conveyor at Station 1
+resourceSeize('convStn1','agvB')
+resourceSeize('Rosie')
+urDashboard('Rosie','THU_530PM/_adminCG-invBToPHome.urp')
+urDashboard('Rosie','THU_530PM/_adminCG-PHomeToConveyor.urp')
+resourceRelease('Rosie')
+resourceRelease('convStn1')
+
+
+//Retrieve Empty Pallet from Conveyor at Station 4
+resourceSeize('convStn4','agvB')
+resourceSeize('Edie')
+urDashboard('Edie','THU_530PM/_adminCG-ConveyorToPHome.urp')
+urDashboard('Edie', 'THU_530PM/_adminCG-PHomeToInvB.urp')
+resourceRelease('Edie')
+resourceRelease('convStn4')
+
+//Move the completed body to the inventory, then conveyor
+resourceSeize('Edie')
+urDashboard('Edie', 'THU_530PM/Final/Short_Body_UnloadMill_Tier1.urp')
+urDashboard('Edie','THU_530PM/Final/Short_PHomeToInvB.urp')
+resourceRelease('Edie')
+resourceSeize('convStn4','agvB')
+resourceSeize('Edie')
+urDashboard('Edie','THU_530PM/_adminCG-InvBToPHome.urp')
+urDashboard('Edie', 'THU_530PM/_adminCG-PHomeToConveyor.urp')
+resourceRelease('Edie')
+resourceRelease('convStn4')
+
+//Send finished part to station 1
+resourceSeize('convStn1','agvB')
+resourceSeize('Rosie')
+urDashboard('Rosie','THU_530PM/_adminCG-ConveyorToPHome.urp')
+urDashboard('Rosie', 'THU_530PM/_adminCG-PHomeToInvB.urp')
+resourceRelease('convStn1')
+resourceRelease('Rosie')
+
+//Wait for the corresponding lid, assemble, and finish
+resourceRelease('B')
+resourceSeize('A')
+resourceRelease('A')
+resourceSeize('B')
+resourceRelease('B')
+resourceRelease('invB')

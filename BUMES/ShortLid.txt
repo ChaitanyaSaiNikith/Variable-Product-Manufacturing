@@ -1,0 +1,68 @@
+//Create a lid from raw material
+
+//Initialize System
+resourceSeize('invA')
+resourceSeize('A')
+
+//At this point, the next operation may enter the system
+startupTasksComplete()
+
+//Collect raw material and manufacture
+resourceSeize('Mary')
+urDashboard('Mary', 'THU_530PM/Final/gravityFeederT.urp')
+urDashboard('Mary','THU_530PM/Final/Short_StockT_LoadMill_MakePart_Tier1.urp')
+resourceRelease('Mary')
+
+//At this point, the next operation may enter the system
+startupTasksComplete()
+
+//Move Empty Pallet to Conveyor at Station 1
+resourceSeize('convStn1','agvA')
+resourceSeize('Rosie')
+urDashboard('Rosie','THU_530PM/_adminCG-invAToPHome.urp')
+urDashboard('Rosie','THU_530PM/_adminCG-PHomeToConveyor.urp')
+resourceRelease('Rosie')
+resourceRelease('convStn1')
+
+
+//Retrieve Empty Pallet from Conveyor at Station 3
+resourceSeize('convStn3','agvA')
+resourceSeize('Mary')
+urDashboard('Mary','THU_530PM/_adminCG-ConveyorToPHome.urp')
+urDashboard('Mary', 'THU_530PM/_adminCG-PHomeToInvA.urp')
+resourceRelease('Mary')
+resourceRelease('convStn3')
+
+//Move the completed lid to the inventory, then conveyor
+resourceSeize('Mary')
+urDashboard('Mary', 'THU_530PM/Final/Short_Lid_UnloadMill.urp')
+urDashboard('Mary','THU_530PM/Final/Short_PHomeToInvA.urp')
+resourceRelease('Mary')
+resourceSeize('convStn3','agvA')
+resourceSeize('Mary')
+urDashboard('Mary','THU_530PM/_adminCG-InvAtoPHome.urp')
+urDashboard('Mary', 'THU_530PM/_adminCG-PHomeToConveyor.urp')
+resourceRelease('Mary')
+resourceRelease('convStn3')
+
+//Send finished part to station 1
+resourceSeize('convStn1','agvA')
+resourceSeize('Rosie')
+urDashboard('Rosie','me345_admin/_adminCG-ConveyorToPHome.urp')
+urDashboard('Rosie', 'me345_admin/_adminCG-PHomeToInvA.urp')
+resourceRelease('Rosie')
+resourceRelease('convStn1')
+
+//Wait for the corresponding body, assemble, and finish
+resourceRelease('A')
+resourceSeize('B')
+resourceSeize('Rosie')
+urDashboard('Rosie','THU_530PM/Final/Short_LidToCamera.urp')
+urDashboard('Rosie', 'THU_530PM/Final/Assembly_Vision.urp')
+urDashboard('Rosie','THU_530PM/Final/Tall_LidToCamera.urp')
+urDashboard('Rosie', 'THU_530PM/Final/Assembly_Vision.urp')
+resourceRelease('Rosie')
+resourceRelease('B')
+resourceSeize('A')
+resourceRelease('A')
+resourceRelease('invA')

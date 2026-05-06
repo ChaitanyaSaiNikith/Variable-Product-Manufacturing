@@ -1,0 +1,85 @@
+def P_adminLinearIndex5():
+  set_standard_analog_input_domain(0, 0)
+  set_standard_analog_input_domain(1, 0)
+  set_tool_analog_input_domain(0, 0)
+  set_tool_analog_input_domain(1, 0)
+  set_analog_outputdomain(0, 0)
+  set_analog_outputdomain(1, 0)
+  set_input_actions_to_default()
+  set_tool_voltage(0)
+  step_count_65d4fa59_4cef_4116_b66f_16ed529e3feb = 0.0
+  thread Step_Counter_Thread_b44d98a6_249b_4068_b36e_e83d87b2244e():
+    while (True):
+      step_count_65d4fa59_4cef_4116_b66f_16ed529e3feb = step_count_65d4fa59_4cef_4116_b66f_16ed529e3feb + 1.0
+      sync()
+    end
+  end
+  run Step_Counter_Thread_b44d98a6_249b_4068_b36e_e83d87b2244e()
+  set_safety_mode_transition_hardness(0)
+  set_tcp(p[0.0,0.0,0.2159,0.0,0.0,0.0])
+  set_payload(1.0)
+  set_gravity([0.0, 0.0, 9.82])
+  global cnc_prog_num=10023
+  global GravityFeeder=p[-0.4245306274548594,-0.2650331812928262,0.21564199084256747,-0.3334943540033622,0.12408789793947973,-0.782689583063839]
+  # begin: URCap Installation Node
+  #   Source: VersaBuilt Robot2CNC, 2.0.9, VersaBuilt Robotics Inc.
+  #   Type: R2C Config
+  global vbSaveR2CIPAddr = "10.241.34.39"
+  global vbSaveDoor = "SingleDoor"
+  global vbSaveDoorSensors = True
+  global vbSaveDoorWaitTime = 0
+  global vbSaveViseSensors = True
+  # end: URCap Installation Node
+  $ 1 "Robot Program"
+  $ 2 "Move_linear_slide_Index5"
+  $ 3 "var_1≔ False "
+  global var_1=  False  
+  $ 4 "Loop var_1≟ False "
+  while (var_1 ==   False  ):
+    $ 5 "var_1≔socket_open('10.241.34.48',4001)"
+    global var_1=socket_open("10.241.34.48",4001)
+  end
+  $ 6 "var_3≔1"
+  global var_3=1
+  $ 7 "Send≔'s r0x24 21'"
+  global Send="s r0x24 21"
+  $ 8 "socket_send_string(Send)"
+  socket_send_string(Send)
+  $ 9 "socket_send_byte(13)"
+  socket_send_byte(13)
+  $ 10 "Send_Reply≔socket_read_string()"
+  global Send_Reply=socket_read_string()
+  $ 11 "Send≔'s r0xca 240000'"
+  global Send="s r0xca 240000"
+  $ 12 "socket_send_string(Send)"
+  socket_send_string(Send)
+  $ 13 "socket_send_byte(13)"
+  socket_send_byte(13)
+  $ 14 "Send_Reply≔socket_read_string()"
+  global Send_Reply=socket_read_string()
+  $ 15 "Send≔'t 1'"
+  global Send="t 1"
+  $ 16 "socket_send_string(Send)"
+  socket_send_string(Send)
+  $ 17 "socket_send_byte(13)"
+  socket_send_byte(13)
+  $ 18 "Send_Reply≔socket_read_string()"
+  global Send_Reply=socket_read_string()
+  $ 19 "Loop var_3≠0"
+  while (var_3 != 0):
+    $ 20 "Send≔'g r0xA0'"
+    global Send="g r0xA0"
+    $ 21 "socket_send_string(Send)"
+    socket_send_string(Send)
+    $ 22 "socket_send_byte(13)"
+    socket_send_byte(13)
+    $ 23 "var_3≔socket_get_var('v')"
+    global var_3=socket_get_var("v")
+    $ 24 "Wait: 0.1"
+    sleep(0.1)
+  end
+  $ 25 "socket_close()"
+  socket_close()
+  $ 26 "sync()"
+  sync()
+end

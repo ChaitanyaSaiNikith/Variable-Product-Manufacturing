@@ -1,0 +1,64 @@
+def hookA_manager():
+  set_standard_analog_input_domain(0, 1)
+  set_standard_analog_input_domain(1, 1)
+  set_tool_analog_input_domain(0, 0)
+  set_tool_analog_input_domain(1, 0)
+  set_analog_outputdomain(0, 0)
+  set_analog_outputdomain(1, 0)
+  set_input_actions_to_default()
+  set_tcp(p[0.0,0.0,0.0,0.0,0.0,0.0])
+  set_payload(1.0)
+  set_tool_voltage(0)
+  step_count_d36d3c24_8bbe_4a92_9275_d05a7378ad8e = 0.0
+  thread Step_Counter_Thread_6e8bd1f8_c033_4412_b47c_620aefb13545():
+    while (True):
+      step_count_d36d3c24_8bbe_4a92_9275_d05a7378ad8e = step_count_d36d3c24_8bbe_4a92_9275_d05a7378ad8e + 1.0
+      sync()
+    end
+  end
+  run Step_Counter_Thread_6e8bd1f8_c033_4412_b47c_620aefb13545()
+  modbus_add_signal("127.0.0.1", 255, 1, 2, "MODBUS_1", False)
+  modbus_set_signal_update_frequency("MODBUS_1", 10)
+  modbus_add_signal("127.0.0.1", 255, 128, 0, "atLocation", False)
+  modbus_set_signal_update_frequency("atLocation", 10)
+  modbus_add_signal("127.0.0.1", 255, 129, 2, "MODBUS_3", False)
+  modbus_set_signal_update_frequency("MODBUS_3", 10)
+  modbus_add_signal("10.241.34.56", 1, 1009, 3, "MODBUS_2", False)
+  modbus_set_signal_update_frequency("MODBUS_2", 10)
+  modbus_set_runstate_dependent_choice("MODBUS_2",0)
+  set_safety_mode_transition_hardness(0)
+  set_gravity([0.0, 0.0, 9.82])
+  global hook_index=1
+  global visionResult=19
+  global num_hooks=6
+  $ 1 "Robot Program"
+  $ 2 "above_HookA≔p[-0.27970, -0.32422, 0.12715, 2.226, -2.216, 0.000]"
+  global above_HookA=p[-0.27970, -0.32422, 0.12715, 2.226, -2.216, 0.000]
+  $ 3 "offset_x≔hook_index * 0.047"
+  global offset_x=hook_index * 0.047
+  $ 4 "above_pose_A≔pose_add(above_HookA, p[0.0, -offset_x, 0.0, 0.0, 0.0, 0.0])"
+  global above_pose_A= pose_add (above_HookA, p[0.0, -offset_x, 0.0, 0.0, 0.0, 0.0])
+  $ 5 "at_pose_A≔pose_add(above_pose_A, p[0.0, 0.0, -0.086, 0.0, 0.0, 0.0])"
+  global at_pose_A= pose_add (above_pose_A, p[0.0, 0.0, -0.086, 0.0, 0.0, 0.0])
+  $ 6 "movel (get_inverse_kin(above_pose_A))"
+  movel ( get_inverse_kin (above_pose_A))
+  $ 7 "movel (get_inverse_kin(at_pose_A))"
+  movel ( get_inverse_kin (at_pose_A))
+  $ 8 "Set DO[0]=On"
+  set_standard_digital_out(0, True)
+  $ 9 "Wait: 1.0"
+  sleep(1.0)
+  $ 10 "movel (get_inverse_kin(above_pose_A), a = 0.5, v = 0.1)"
+  movel ( get_inverse_kin (above_pose_A), a = 0.5, v = 0.1)
+  $ 11 "movej (get_inverse_kin(above_HookA))"
+  movej ( get_inverse_kin (above_HookA))
+  $ 12 "hook_index≔hook_index + 1"
+  global hook_index=hook_index + 1
+  $ 13 "If hook_index ≥ num_hooks"
+  if (hook_index  >=  num_hooks):
+    $ 14 "hook_index≔0"
+    global hook_index=0
+    $ 15 "Popup: All Hook_A's were used! Reload Fixture"
+    popup("All Hook_A's were used! Reload Fixture", "Message", False, False, blocking=True)
+  end
+end

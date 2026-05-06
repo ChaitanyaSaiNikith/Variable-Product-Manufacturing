@@ -1,0 +1,11 @@
+
+resourceSeize('Rosie')
+urDashboard('Rosie','THU_530PM/Final/Short_LidToCamera.urp')
+urDashboard('Rosie', 'THU_530PM/Final/Assembly_Vision.urp')
+
+urDashboard('Rosie', 'THU_530PM/Final/Tall_LidToCamera.urp')
+urDashboard('Rosie', 'THU_530PM/Final/Assembly_Vision.urp')
+resourceRelease('Rosie')
+
+//urDashboard('Rosie', 'THU_530PM/Final/Tall_LidToCamera.urp')
+//urDashboard('Rosie', 'THU_530PM/Final/Assembly_Vision.urp')

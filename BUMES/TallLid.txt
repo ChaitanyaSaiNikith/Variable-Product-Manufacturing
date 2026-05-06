@@ -1,0 +1,66 @@
+//Create a lid from raw material
+
+//Initialize System
+resourceSeize('invC')
+resourceSeize('C')
+
+//At this point, the next operation may enter the system
+startupTasksComplete()
+
+//Collect raw material and manufacture
+resourceSeize('Mary')
+urDashboard('Mary', 'THU_530PM/Final/gravityFeederT.urp')
+urDashboard('Mary','THU_530PM/Final/Tall_StockT_LoadMill_MakePart_Tier3.urp')
+resourceRelease('Mary')
+
+//At this point, the next operation may enter the system
+startupTasksComplete()
+
+//Move Empty Pallet to Conveyor at Station 1
+resourceSeize('convStn1','agvC')
+resourceSeize('Rosie')
+urDashboard('Rosie','THU_530PM/_adminCG-invCToPHome.urp')
+urDashboard('Rosie','THU_530PM/_adminCG-PHomeToConveyor.urp')
+resourceRelease('Rosie')
+resourceRelease('convStn1')
+
+
+//Retrieve Empty Pallet from Conveyor at Station 3
+resourceSeize('convStn3','agvC')
+resourceSeize('Mary')
+urDashboard('Mary','THU_530PM/_adminCG-ConveyorToPHome.urp')
+urDashboard('Mary', 'THU_530PM/_adminCG-PHomeToInvC.urp')
+resourceRelease('Mary')
+resourceRelease('convStn3')
+
+//Move the completed lid to the inventory, then conveyor
+resourceSeize('Mary')
+urDashboard('Mary', 'THU_530PM/Final/Tall_Lid_UnloadMill.urp')
+urDashboard('Mary','THU_530PM/Final/Tall_PHomeToInvC.urp')
+resourceRelease('Mary')
+resourceSeize('convStn3','agvC')
+resourceSeize('Mary')
+urDashboard('Mary','THU_530PM/_adminCG-InvCtoPHome.urp')
+urDashboard('Mary', 'THU_530PM/_adminCG-PHomeToConveyor.urp')
+resourceRelease('Mary')
+resourceRelease('convStn3')
+
+//Send finished part to station 1
+resourceSeize('convStn1','agvC')
+resourceSeize('Rosie')
+urDashboard('Rosie','THU_530PM/_adminCG-ConveyorToPHome.urp')
+urDashboard('Rosie', 'THU_530PM/_adminCG-PHomeToInvC.urp')
+resourceRelease('Rosie')
+resourceRelease('convStn1')
+
+//Wait for the corresponding body, assemble, and finish
+resourceRelease('C')
+resourceSeize('D')
+resourceSeize('Rosie')
+urDashboard('Rosie', 'THU_530PM/Final/Tall_LidToCamera.urp')
+urDashboard('Rosie', 'THU_530PM/Final/Assembly_Vision.urp')
+resourceRelease('Rosie')
+resourceRelease('D')
+resourceSeize('C')
+resourceRelease('C')
+resourceRelease('invC')

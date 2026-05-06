@@ -1,0 +1,532 @@
+def Short_Lid_UnloadMill():
+  set_tcp(p[0.0,0.0,0.2159,0.0,0.0,0.0])
+  set_payload(1.0)
+  set_safety_mode_transition_hardness(0)
+  step_count_de8069fc_d565_400f_912f_57f7fe23ff0e = 0.0
+  thread Step_Counter_Thread_eb257e4b_00e2_424d_a1ac_f3c81c55566d():
+    while (True):
+      step_count_de8069fc_d565_400f_912f_57f7fe23ff0e = step_count_de8069fc_d565_400f_912f_57f7fe23ff0e + 1.0
+      sync()
+    end
+  end
+  run Step_Counter_Thread_eb257e4b_00e2_424d_a1ac_f3c81c55566d()
+  set_standard_analog_input_domain(0, 0)
+  set_standard_analog_input_domain(1, 0)
+  set_tool_analog_input_domain(0, 0)
+  set_tool_analog_input_domain(1, 0)
+  set_analog_outputdomain(0, 0)
+  set_analog_outputdomain(1, 0)
+  set_input_actions_to_default()
+  set_tool_voltage(0)
+  set_gravity([0.0, 0.0, 9.82])
+  global cnc_prog_num=10023
+  global GravityFeeder=p[-0.4245306274548594,-0.2650331812928262,0.21564199084256747,-0.3334943540033622,0.12408789793947973,-0.782689583063839]
+  # begin: URCap Installation Node
+  #   Source: VersaBuilt Robot2CNC, 2.0.9, VersaBuilt Robotics Inc.
+  #   Type: R2C Config
+  global vbSaveR2CIPAddr = "10.241.34.39"
+  global vbSaveDoor = "SingleDoor"
+  global vbSaveDoorSensors = True
+  global vbSaveDoorWaitTime = 0
+  global vbSaveViseSensors = True
+  # end: URCap Installation Node
+  def _adminLinearIndex5():
+    $ 30 "_adminLinearIndex5" "noBreak"
+    $ 31 "Move_linear_slide_Index5"
+    $ 32 "var_1≔ False "
+    global var_1=  False  
+    $ 33 "Loop var_1≟ False "
+    while (var_1 ==   False  ):
+      $ 34 "var_1≔socket_open('10.241.34.48',4001)"
+      global var_1=socket_open("10.241.34.48",4001)
+    end
+    $ 35 "var_3≔1"
+    global var_3=1
+    $ 36 "Send≔'s r0x24 21'"
+    global Send="s r0x24 21"
+    $ 37 "socket_send_string(Send)"
+    socket_send_string(Send)
+    $ 38 "socket_send_byte(13)"
+    socket_send_byte(13)
+    $ 39 "Send_Reply≔socket_read_string()"
+    global Send_Reply=socket_read_string()
+    $ 40 "Send≔'s r0xca 240000'"
+    global Send="s r0xca 240000"
+    $ 41 "socket_send_string(Send)"
+    socket_send_string(Send)
+    $ 42 "socket_send_byte(13)"
+    socket_send_byte(13)
+    $ 43 "Send_Reply≔socket_read_string()"
+    global Send_Reply=socket_read_string()
+    $ 44 "Send≔'t 1'"
+    global Send="t 1"
+    $ 45 "socket_send_string(Send)"
+    socket_send_string(Send)
+    $ 46 "socket_send_byte(13)"
+    socket_send_byte(13)
+    $ 47 "Send_Reply≔socket_read_string()"
+    global Send_Reply=socket_read_string()
+    $ 48 "Loop var_3≠0"
+    while (var_3 != 0):
+      $ 49 "Send≔'g r0xA0'"
+      global Send="g r0xA0"
+      $ 50 "socket_send_string(Send)"
+      socket_send_string(Send)
+      $ 51 "socket_send_byte(13)"
+      socket_send_byte(13)
+      $ 52 "var_3≔socket_get_var('v')"
+      global var_3=socket_get_var("v")
+      $ 53 "Wait: 0.1"
+      sleep(0.1)
+    end
+    $ 54 "socket_close()"
+    socket_close()
+    $ 55 "sync()"
+    sync()
+  end
+  $ 1 "BeforeStart"
+  $ 2 "Script: R2CScript.script"
+  # Copyright 2020 VersaBuilt, Inc. All Rights Reserved
+  
+  global vbR2CIPAddr = "192.168.2.1"
+  global vbR2CPort = 9002
+  global vbVersaBlast = "VERSABLAST"
+  global vbGripperOpen = "GRIPPER_OPEN"
+  global vbGripperClose = "GRIPPER_CLOSE"
+  global vbVise1Open = "VISE_1_OPEN"
+  global vbVise1Close = "VISE_1_CLOSE"
+  global vbVise1Sensor = "VISE_1_SENSOR"
+  global vbVise2Open = "VISE_2_OPEN"
+  global vbVise2Close = "VISE_2_CLOSE"
+  global vbVise2Sensor = "VISE_2_SENSOR"
+  global vbDoorOpen = "DOOR_OPEN"
+  global vbDoorOpenSensor = "DOOR_OPEN_SENSOR"
+  global vbDoorOpenSensor2 = "DOUBLE_DOOR_OPEN_SENSOR"
+  global vbDoorClose = "DOOR_CLOSE"
+  global vbDoorCloseSensor = "DOOR_CLOSE_SENSOR"
+  global vbDoorCloseSensor2 = "DOUBLE_DOOR_CLOSE_SENSOR"
+  global vbDoor = "SingleDoor"
+  global vbDoorWaitTime = 7
+  global vbDoorTimeOut = 15
+  global vbDoorSensors = True
+  global vbViseSensors = True
+  global vbSim = False
+  
+  def InitializeR2CVars():
+    vbR2CIPAddr = vbSaveR2CIPAddr
+    vbDoor = vbSaveDoor
+    vbDoorSensors = vbSaveDoorSensors
+    vbViseSensors = vbSaveViseSensors
+    vbDoorWaitTime = vbSaveDoorWaitTime
+  end
+  
+  def SetIPAddr(ip):
+    vbSaveR2CIPAddr = ip
+  end
+  
+  # Send a R2C Command. If the response is an error, a blocking popup will be generated.
+  # Otherwise the response is returned
+  def SendR2CCommand(text):
+    response = SendR2CCommandRaw(text)
+    CheckR2CResponse(response)
+    return response
+  end
+  
+  # Reads a R2C response and creates a blocking popup if an error is detected
+  def CheckR2CResponse(response):
+    errorPortion = str_sub(response, 0, 5)
+    if (errorPortion == "ERROR"):
+      popup("Robot2CNC Error, press the Stop Program button and resolve the error condition: " + response, error = True, blocking = True)
+      halt
+    end
+  end
+  
+  def OpenSocket():
+    count = 0
+    socket_result = socket_open(vbR2CIPAddr, vbR2CPort, "socket_1")
+    while (not(socket_result) and count < 10):
+      sleep(1)
+      count = count + 1
+      socket_result = socket_open(vbR2CIPAddr, vbR2CPort, "socket_1")
+    end
+    if not(socket_result):
+      popup("Communication with Robot2CNC Failed (socket open). Press the Stop Program button and fix the Robot2CNC communication problem.", "Robot2CNC Command Error", error = True, blocking = True)
+      halt
+    end
+  end
+  
+  # Send a R2C command, return the response. Does not check response for error.
+  def SendR2CCommandRaw(text):
+    InitializeR2CVars()
+    count = 0
+    while count < 3:
+      count = count + 1
+      OpenSocket()
+      socket_send_line(text, "socket_1")
+      status = socket_read_string("socket_1", "", ";", True, 5)
+      socket_close("socket_1")
+      if str_len(status) > 0:
+        return status
+      end
+      sleep(1)
+    end
+    popup("Communication with Robot2CNC Failed (no response). Press the Stop Program button and fix the Robot2CNC communication problem.", "Robot2CNC Command Error", error = True, blocking = True)
+    halt
+  end
+  
+  def VersaBlastOn():
+      if vbSim == False:
+          SetDO(vbVersaBlast, "ON")
+      end
+  end
+  
+  def VersaBlastOff():
+      if vbSim == False:
+          SetDO(vbVersaBlast, "OFF")
+      end
+  end
+  
+  def OpenGripper():
+      if vbSim == False:
+          SetDO(vbGripperClose, "OFF")
+          SetDO(vbGripperOpen, "ON")
+      end
+  end
+  
+  def CloseGripper():
+      if vbSim == False:
+          SetDO(vbGripperClose, "ON")
+          SetDO(vbGripperOpen, "OFF")
+      end
+  end
+  
+  def FloatGripper():
+      if vbSim == False:
+          SetDO(vbGripperClose, "OFF")
+          SetDO(vbGripperOpen, "OFF")
+      end
+  end
+  
+  def OpenVise(viseNum):
+    if vbSim == False:
+      if viseNum == 1 :
+        SetDO(vbVise1Close, "OFF")
+        SetDO(vbVise1Open, "ON")
+      else:
+        SetDO(vbVise2Close, "OFF")
+        SetDO(vbVise2Open, "ON")
+      end
+    end
+  end
+  
+  def CloseVise(viseNum):
+    if vbSim == False:
+      if viseNum == 1 :
+        SetDO(vbVise1Open, "OFF")
+        SetDO(vbVise1Close, "ON")
+      else:
+        SetDO(vbVise2Open, "OFF")
+        SetDO(vbVise2Close, "ON")
+      end
+    end
+  end
+  
+  def ViseFumbleCheck(viseNum):
+    if vbSim == False:
+      InitializeR2CVars()
+      if vbViseSensors:
+        if viseNum == 1:
+          if (GetDI(vbVise1Sensor) == "OFF"):
+            popup("Vise fumble. The VB Mill App Kit could not confirm the part was loaded in the vise. Exiting","VB Mill App Kit",error= True, blocking=True)
+            halt
+          end
+        else:
+          if (GetDI(vbVise2Sensor) == "OFF"):
+            popup("Vise fumble. The VB Mill App Kit could not confirm the part was loaded in the vise. Exiting","VB Mill App Kit",error= True, blocking=True)
+            halt
+          end
+        end
+      end
+    end
+  end
+  
+  # clamps a vise by moving in the direction specified by ODID
+  def ClampVise(viseNum,ODID):
+    if vbSim == False:
+      if (ODID == "OD"):
+        CloseVise(viseNum)
+      else:
+        OpenVise(viseNum)
+      end
+    end
+  end
+  
+  def UnClampVise(viseNum,ODID):
+    if vbSim == False:
+      if (ODID == "OD"):
+        OpenVise(viseNum)
+      else:
+        CloseVise(viseNum)
+      end
+    end
+  end
+  
+  def OpenDoor():
+    if vbSim == False:
+      InitializeR2CVars()
+      if vbDoor != "CNCDoor" :
+        SetDO(vbDoorClose, "OFF")
+        SetDO(vbDoorOpen, "ON")
+        if vbDoorSensors == True :
+          vbDoorTimeOutCounter = 0
+          while GetDI(vbDoorOpenSensor) == "OFF" :
+            sleep(.1)
+            vbDoorTimeOutCounter = vbDoorTimeOutCounter + 0.1
+            if vbDoorTimeOutCounter >= vbDoorTimeOut :
+              FloatDoor()
+              popup("Door failed to open within " + to_str(vbDoorTimeOut) + " seconds (door sensor 1).<br><br>Fix the problem, open the door and press Continue or press the Stop button.", blocking = True)
+              vbDoorTimeOutCounter = 0
+            end
+          end
+          # if we have double doors, check the double door sensor
+          if (vbDoor == "DoubleDoor") :
+            vbDoorTimeOutCounter = 0
+            while GetDI(vbDoorOpenSensor2) == "OFF" :
+              sleep(.1)
+              vbDoorTimeOutCounter = vbDoorTimeOutCounter + 0.1
+              if vbDoorTimeOutCounter >= vbDoorTimeOut :
+                FloatDoor()
+                popup("Door failed to open within " + to_str(vbDoorTimeOut) + " seconds (door sensor 2).<br><br>Fix the problem, open the door and press Continue or press the Stop button.", blocking = True)
+                vbDoorTimeOutCounter = 0
+              end
+            end
+          end
+        else:
+          sleep(vbDoorWaitTime)
+        end
+        # give it another second to open all the way...
+        sleep(1)
+        # Float the door after open/close
+        FloatDoor()
+      else:
+        sleep(vbDoorWaitTime)
+      end
+    end
+  end
+  
+  def CloseDoor():
+    if vbSim == False:
+      InitializeR2CVars()
+      if vbDoor != "CNCDoor" :
+        SetDO(vbDoorOpen, "OFF")
+        SetDO(vbDoorClose, "ON")
+        if vbDoorSensors == True :
+          vbDoorTimeOutCounter = 0
+          while GetDI(vbDoorCloseSensor) == "OFF" :
+            sleep(.1)
+            vbDoorTimeOutCounter = vbDoorTimeOutCounter + 0.1
+            if vbDoorTimeOutCounter >= vbDoorTimeOut :
+              FloatDoor()
+              popup("Door failed to close within " + to_str(vbDoorTimeOut) + " seconds (door sensor 1).<br><br>Fix the problem, open the door and press Continue or press the Stop button.", blocking = True)
+              vbDoorTimeOutCounter = 0
+            end
+          end
+          # if we have double doors, check the double door sensor
+          if (vbDoor == "DoubleDoor") :
+            vbDoorTimeOutCounter = 0
+            while GetDI(vbDoorCloseSensor2) == "OFF" :
+              sleep(.1)
+              vbDoorTimeOutCounter = vbDoorTimeOutCounter + 0.1
+              if vbDoorTimeOutCounter >= vbDoorTimeOut :
+                FloatDoor()
+                popup("Door failed to close within " + to_str(vbDoorTimeOut) + " seconds (door sensor 2).<br><br>Fix the problem, open the door and press Continue or press the Stop button.", blocking = True)
+                vbDoorTimeOutCounter = 0
+              end
+            end
+          end
+        else:
+          sleep(vbDoorWaitTime)
+        end
+        # give it another second to close tight...
+        sleep(1)
+        # Float door after closing/opening
+        FloatDoor()
+      else:
+        sleep(vbDoorWaitTime)
+      end
+    end
+  end
+  
+  # Wait for DI at addr to equal value, timeout after specified seconds. Retuens true on success, false on timeout.
+  def WaitDI(addr, value, timeout):
+    if vbSim == False:
+      time = 0
+      while GetDI(addr) != value:
+        sleep(.1)
+        time = time + 0.1
+        if time > timeout:
+          return False
+        end
+      end
+      return True
+    else:
+      return True
+    end
+  end
+  
+  def SetDO(ioAddress, onOff):
+    if vbSim == False:
+      command = "SET_DO," + ioAddress + "," + onOff + ";"
+      result = SendR2CCommand(command)
+      if result + ";" != command:
+        popup("Error setting digital output on Robot2CNC, press Stop Program and resolve error.<br>Unable to set " + to_str(ioAddress) + ", " + to_str(onOff), error=True, blocking = True)
+        halt
+      end
+    end
+  end
+  
+  def GetDI(ioAddress):
+    if vbSim == False:
+      command = "GET_DI," + ioAddress + ";"
+      result = SendR2CCommand(command)
+      return str_sub(result, str_len(command))
+    end
+  end
+  
+  def WaitCNC():
+    if vbSim == False:
+      status = SendR2CCommand("CNC_STATUS;")
+      while (status != "CNC_STATUS,COMPLETE"):
+        status = SendR2CCommand("CNC_STATUS;")
+        sleep(0.5)
+      end
+      if (status != "CNC_STATUS,COMPLETE"):
+        popup("Can not Validate Program Completion<br>CNC Status: " + status, "Milling Program Not Complete", False, False, blocking = True)
+        halt
+      else:
+        SendR2CCommand("RESET_CNC;")
+      end
+    end
+  end
+  
+  def FloatVise(viseNum):
+    if vbSim == False:
+      if viseNum == 1 :
+        SetDO(vbVise1Open, "OFF")
+        SetDO(vbVise1Close, "OFF")
+      else:
+        SetDO(vbVise2Open, "OFF")
+        SetDO(vbVise2Close, "OFF")
+      end
+    end
+  end
+  
+  def FloatDoor():
+    if vbSim == False:
+      SetDO(vbDoorOpen, "OFF")
+      SetDO(vbDoorClose, "OFF")
+    end
+  end
+  
+  def RunCNCProgram(progNum):
+    if vbSim == False:
+      status = SendR2CCommand("CNC_STATUS;")
+      if not(status == "CNC_STATUS,IDLE" or status == "CNC_STATUS,COMPLETE"):
+        popup("CNC Not Idle. Press Stop Program and resolve problem on CNC.<br>Result from CNC: " + status, "CNC Not Ready", False, False, blocking = True)
+        halt
+      end
+      SendR2CCommand("RUN_PROGRAM,"+to_str(progNum)+";")
+    end
+  end
+  
+  def SetHaasCellSafe():
+    if vbSim == False:
+      SendR2CCommand("ENABLE_HAAS_CELL_SAFE;")
+    end
+    sleep(0.1)
+  end
+  
+  def ClearHaasCellSafe():
+    if vbSim == False:
+      SendR2CCommand("DISABLE_HAAS_CELL_SAFE;")
+    end
+  end
+  
+  def GetMacro(macroNum):
+    if vbSim == False :
+      send = "READ_MACRO,"+to_str(macroNum)
+      length = str_len(send)
+      result = SendR2CCommand(send+";")
+      return to_num(str_sub(result,length+1))
+    else:
+      return 0
+    end
+  end
+  
+  def SetMacro(macroNum, value):
+    if vbSim == False:
+      result = SendR2CCommand("WRITE_MACRO,"+to_str(macroNum)+","+to_str(value)+";")
+    end
+  end
+  
+  
+  
+  $ 3 "Robot Program"
+  # begin: URCap Program Node
+  #   Source: VersaBuilt Robot2CNC, 2.0.9, VersaBuilt Robotics Inc.
+  #   Type: Robot2CNC
+  $ 5 "Run CNC Program"
+  SetIPAddr("10.241.34.39")
+  RunCNCProgram(100)
+  # end: URCap Program Node
+  # begin: URCap Program Node
+  #   Source: VersaBuilt Robot2CNC, 2.0.9, VersaBuilt Robotics Inc.
+  #   Type: Robot2CNC
+  $ 6 "Wait for CNC Program"
+  SetIPAddr("10.241.34.39")
+  WaitCNC()
+  ClearHaasCellSafe()
+  # end: URCap Program Node
+  $ 7 "Set DO[1]=Off"
+  set_standard_digital_out(1, False)
+  $ 8 "MoveJ"
+  $ 9 "pHome" "breakAfter"
+  movej(get_inverse_kin(p[-.424232661715, -.264291880106, .215917672585, -1.197341715245, -2.891486232427, -.008239341815], qnear=[3.926908493041992, -1.570916000996725, -1.5707815329181116, -1.5709636847125452, 1.557700276374817, -2.878347979944351E-4]), a=1.7453292519943295, v=3.141592653589793)
+  $ 10 "Call _adminLinearIndex5"
+  _adminLinearIndex5()
+  $ 11 "Wait: 1.0"
+  sleep(1.0)
+  $ 12 "Set DO[0]=Off"
+  set_standard_digital_out(0, False)
+  $ 13 "Set DO[1]=Off"
+  set_standard_digital_out(1, False)
+  $ 14 "MoveJ"
+  $ 15 "outsideMill" "breakAfter"
+  movej(get_inverse_kin(p[-.168714441667, -.014458596095, .110666253497, 1.202164995061, 2.901698339839, .001591864613], qnear=[3.9269204139709473, -0.6063087622271937, -2.3360312620746058, -1.7712624708758753, 1.5710772275924683, 7.190534961409867E-5]), a=1.7453292519943295, v=3.141592653589793, r=0.1)
+  $ 16 "pivot" "breakAfter"
+  movej(get_inverse_kin(p[-.014435522974, .168679291996, .110655548216, 2.901294665281, 1.201584971017, .000318711250], qnear=[2.3561062812805176, -0.6062606016742151, -2.336043183003561, -1.771381680165426, 1.5711135864257812, 1.1984225238848012E-5]), a=1.7453292519943295, v=3.141592653589793)
+  $ 17 "aboveVise2" "breakAfter"
+  movej(get_inverse_kin(p[-.521060568558, .622388674489, .103186579323, -2.877766602676, -1.197636224723, .017512862529], qnear=[2.4027652740478516, -2.387805763875143, -0.7061074415790003, -1.5915101210223597, 1.5705854892730713, 0.043232716619968414]), a=1.7453292519943295, v=3.141592653589793)
+  $ 18 "MoveL"
+  $ 19 "atVise2" "breakAfter"
+  movel(p[-.505157921690, .607618028842, .036308695125, -2.877893165329, -1.197689024243, .017446792069], a=0.1, v=0.1)
+  $ 20 "Set DO[0]=On"
+  set_standard_digital_out(0, True)
+  $ 21 "Wait: 1.0"
+  sleep(1.0)
+  $ 22 "Set DO[1]=Off"
+  set_standard_digital_out(1, False)
+  $ 23 "Wait: 1.0"
+  sleep(1.0)
+  $ 24 "easeout" "breakAfter"
+  movel(p[-.513355868628, .599708547546, .051410234844, -2.877977032607, -1.197604799288, .017390321913], a=0.1, v=0.1)
+  $ 25 "aboveVise2" "breakAfter"
+  movel(p[-.521060568558, .622388674489, .103186579323, -2.877766602676, -1.197636224723, .017512862529], a=0.1, v=0.1)
+  $ 26 "MoveJ"
+  $ 27 "pivot" "breakAfter"
+  movej(get_inverse_kin(p[-.014435522974, .168679291996, .110655548216, 2.901294665281, 1.201584971017, .000318711250], qnear=[2.3561062812805176, -0.6062606016742151, -2.336043183003561, -1.771381680165426, 1.5711135864257812, 1.1984225238848012E-5]), a=2.0943951023931953, v=3.141592653589793)
+  $ 28 "outsideMill" "breakAfter"
+  movej(get_inverse_kin(p[-.168714441667, -.014458596095, .110666253497, 1.202164995061, 2.901698339839, .001591864613], qnear=[3.9269204139709473, -0.6063087622271937, -2.3360312620746058, -1.7712624708758753, 1.5710772275924683, 7.190534961409867E-5]), a=2.0943951023931953, v=3.141592653589793, r=0.1)
+  $ 29 "pHome" "breakAfter"
+  movej(get_inverse_kin(p[-.424232661715, -.264291880106, .215917672585, -1.197341715245, -2.891486232427, -.008239341815], qnear=[3.926908493041992, -1.570916000996725, -1.5707815329181116, -1.5709636847125452, 1.557700276374817, -2.878347979944351E-4]), a=2.0943951023931953, v=3.141592653589793)
+end

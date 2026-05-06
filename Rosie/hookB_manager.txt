@@ -1,0 +1,16 @@
+ Program
+   Robot Program
+     above_HookB≔p[-0.39636, -0.32475, 0.15692, 2.226, -2.216, 0.000]
+     offset_x≔hook_indexB * 0.047
+     above_pose_B≔pose_add(above_HookB, p[0.0, -offset_x, 0.0, 0.0, 0.0, 0.0])
+     at_pose_B≔pose_add(above_pose_B, p[0.0, 0.0, -0.10503, 0.0, 0.0, 0.0])
+     movel (get_inverse_kin(above_pose_B))
+     movel (get_inverse_kin(at_pose_B))
+     Set DO[0]=On
+     Wait: 1.0
+     movel (get_inverse_kin(above_pose_B), a = 0.5, v = 0.1)
+     movej (get_inverse_kin(above_HookB))
+     hook_indexB≔hook_indexB + 1
+     If hook_index ≥ num_hooks
+       hook_indexB≔0
+       Popup: All Hook_B's were used! Reload Fixture

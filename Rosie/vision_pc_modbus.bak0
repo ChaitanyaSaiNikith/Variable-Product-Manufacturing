@@ -1,0 +1,19 @@
+pc_ip = "10.241.34.37"
+pc_port = 30002
+
+connection = socket_open(pc_ip, pc_port, "vision_socket")
+
+if (connection):
+    socket_send_string("run_vision", "vision_socket")
+    socket_close("vision_socket")
+end
+
+timeout = 15.0
+elapsed =0.0
+visionResult = 0
+while visionResult == 0 and elapsed < timeout:
+         sync()
+         sleep(0.2)
+         elapsed = elapsed + 0.2
+         visionResult = modbus_get_signal_status ("vision_result")
+end

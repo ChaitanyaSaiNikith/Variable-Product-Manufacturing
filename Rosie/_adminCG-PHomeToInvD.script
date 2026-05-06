@@ -1,0 +1,114 @@
+def P_adminCGPHomeToInvD():
+  modbus_add_signal("127.0.0.1", 255, 1, 2, "MODBUS_1", False)
+  modbus_set_signal_update_frequency("MODBUS_1", 10)
+  modbus_add_signal("127.0.0.1", 255, 128, 0, "atLocation", False)
+  modbus_set_signal_update_frequency("atLocation", 10)
+  modbus_add_signal("127.0.0.1", 255, 129, 2, "MODBUS_3", False)
+  modbus_set_signal_update_frequency("MODBUS_3", 10)
+  modbus_add_signal("10.241.34.56", 1, 1009, 3, "MODBUS_2", False)
+  modbus_set_signal_update_frequency("MODBUS_2", 10)
+  modbus_add_signal("10.241.34.37", 1, 0, 3, "vision_result", False)
+  modbus_set_signal_update_frequency("vision_result", 10)
+  modbus_set_runstate_dependent_choice("MODBUS_2",0)
+  modbus_set_runstate_dependent_choice("vision_result",0)
+  set_gravity([0.0, 0.0, 9.82])
+  step_count_727d1014_d2af_4993_b97d_252ac45b31fc = 0.0
+  thread Step_Counter_Thread_b6180ec4_2a1c_4eea_916c_5d5191e43ce3():
+    while (True):
+      step_count_727d1014_d2af_4993_b97d_252ac45b31fc = step_count_727d1014_d2af_4993_b97d_252ac45b31fc + 1.0
+      sync()
+    end
+  end
+  run Step_Counter_Thread_b6180ec4_2a1c_4eea_916c_5d5191e43ce3()
+  set_standard_analog_input_domain(0, 1)
+  set_standard_analog_input_domain(1, 1)
+  set_tool_analog_input_domain(0, 0)
+  set_tool_analog_input_domain(1, 0)
+  set_analog_outputdomain(0, 0)
+  set_analog_outputdomain(1, 0)
+  set_input_actions_to_default()
+  set_tcp(p[0.0,0.0,0.0,0.0,0.0,0.0])
+  set_payload(1.0)
+  set_tool_voltage(0)
+  set_safety_mode_transition_hardness(0)
+  global hook_index=1
+  global visionResult=2
+  global num_hooks=6
+  global hook_indexB=1
+  def _adminLinearIndex3():
+    $ 14 "_adminLinearIndex3" "noBreak"
+    $ 15 "Move_linear_slide_Index1"
+    $ 16 "var_1≔ False "
+    global var_1=  False  
+    $ 17 "Loop var_1≟ False "
+    while (var_1 ==   False  ):
+      $ 18 "var_1≔socket_open('10.241.34.44',4001)"
+      global var_1=socket_open("10.241.34.44",4001)
+    end
+    $ 19 "var_3≔1"
+    global var_3=1
+    $ 20 "Send≔'s r0x24 21'"
+    global Send="s r0x24 21"
+    $ 21 "socket_send_string(Send)"
+    socket_send_string(Send)
+    $ 22 "socket_send_byte(13)"
+    socket_send_byte(13)
+    $ 23 "Send_Reply≔socket_read_string()"
+    global Send_Reply=socket_read_string()
+    $ 24 "Send≔'s r0xca 103936'"
+    global Send="s r0xca 103936"
+    $ 25 "socket_send_string(Send)"
+    socket_send_string(Send)
+    $ 26 "socket_send_byte(13)"
+    socket_send_byte(13)
+    $ 27 "Send_Reply≔socket_read_string()"
+    global Send_Reply=socket_read_string()
+    $ 28 "Send≔'t 1'"
+    global Send="t 1"
+    $ 29 "socket_send_string(Send)"
+    socket_send_string(Send)
+    $ 30 "socket_send_byte(13)"
+    socket_send_byte(13)
+    $ 31 "Send_Reply≔socket_read_string()"
+    global Send_Reply=socket_read_string()
+    $ 32 "Loop var_3≠0"
+    while (var_3 != 0):
+      $ 33 "Send≔'g r0xA0'"
+      global Send="g r0xA0"
+      $ 34 "socket_send_string(Send)"
+      socket_send_string(Send)
+      $ 35 "socket_send_byte(13)"
+      socket_send_byte(13)
+      $ 36 "var_3≔socket_get_var('v')"
+      global var_3=socket_get_var("v")
+      $ 37 "Wait: 0.1"
+      sleep(0.1)
+    end
+    $ 38 "socket_close()"
+    socket_close()
+    $ 39 "sync()"
+    sync()
+  end
+  $ 1 "Robot Program"
+  $ 2 "Call _adminLinearIndex3"
+  _adminLinearIndex3()
+  $ 3 "Set DO[0]=On"
+  set_standard_digital_out(0, True)
+  $ 4 "MoveJ"
+  $ 5 "pHome" "breakAfter"
+  movej(get_inverse_kin(p[.109140646997, -.486905511740, .431874337087, .000009529599, -3.141583114199, .000261860116], qnear=[1.570778727531433, -1.570820156727926, 1.5708212852478027, -1.5709641615497034, -1.57080585161318, -2.366701234990387E-5]), a=1.3962634015954636, v=1.0471975511965976)
+  $ 6 "aboveInvD" "breakAfter"
+  movej(get_inverse_kin(p[-.329093068689, -.607424035077, .153422783004, 2.221349093579, 2.221370696845, -.000339317083], qnear=[0.9156120419502258, -0.9452031294452112, 1.474240779876709, -2.100063149129049, -1.5707100073443812, 0.9156023263931274]), a=1.3962634015954636, v=1.0471975511965976)
+  $ 7 "MoveL"
+  $ 8 "atInvD" "breakAfter"
+  movel(p[-.329065918658, -.607455769653, .049439792185, 2.221290902987, 2.221418963437, -.000423228254], a=1.2, v=0.25)
+  $ 9 "Set DO[0]=Off"
+  set_standard_digital_out(0, False)
+  $ 10 "Wait: 1.0"
+  sleep(1.0)
+  $ 11 "aboveInvD" "breakAfter"
+  movel(p[-.329093068689, -.607424035077, .153422783004, 2.221349093579, 2.221370696845, -.000339317083], a=1.2, v=0.25)
+  $ 12 "MoveJ"
+  $ 13 "pHome" "breakAfter"
+  movej(get_inverse_kin(p[.109140646997, -.486905511740, .431874337087, .000009529599, -3.141583114199, .000261860116], qnear=[1.570778727531433, -1.570820156727926, 1.5708212852478027, -1.5709641615497034, -1.57080585161318, -2.366701234990387E-5]), a=1.3962634015954636, v=1.0471975511965976)
+end

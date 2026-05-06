@@ -1,0 +1,189 @@
+def Short_LidToCamera():
+  modbus_add_signal("127.0.0.1", 255, 1, 2, "MODBUS_1", False)
+  modbus_set_signal_update_frequency("MODBUS_1", 10)
+  modbus_add_signal("127.0.0.1", 255, 128, 0, "atLocation", False)
+  modbus_set_signal_update_frequency("atLocation", 10)
+  modbus_add_signal("127.0.0.1", 255, 129, 2, "MODBUS_3", False)
+  modbus_set_signal_update_frequency("MODBUS_3", 10)
+  modbus_add_signal("10.241.34.56", 1, 1009, 3, "MODBUS_2", False)
+  modbus_set_signal_update_frequency("MODBUS_2", 10)
+  modbus_add_signal("10.241.34.37", 1, 0, 3, "vision_result", False)
+  modbus_set_signal_update_frequency("vision_result", 10)
+  modbus_set_runstate_dependent_choice("MODBUS_2",0)
+  modbus_set_runstate_dependent_choice("vision_result",0)
+  set_gravity([0.0, 0.0, 9.82])
+  step_count_727d1014_d2af_4993_b97d_252ac45b31fc = 0.0
+  thread Step_Counter_Thread_b6180ec4_2a1c_4eea_916c_5d5191e43ce3():
+    while (True):
+      step_count_727d1014_d2af_4993_b97d_252ac45b31fc = step_count_727d1014_d2af_4993_b97d_252ac45b31fc + 1.0
+      sync()
+    end
+  end
+  run Step_Counter_Thread_b6180ec4_2a1c_4eea_916c_5d5191e43ce3()
+  set_standard_analog_input_domain(0, 1)
+  set_standard_analog_input_domain(1, 1)
+  set_tool_analog_input_domain(0, 0)
+  set_tool_analog_input_domain(1, 0)
+  set_analog_outputdomain(0, 0)
+  set_analog_outputdomain(1, 0)
+  set_input_actions_to_default()
+  set_tcp(p[0.0,0.0,0.0,0.0,0.0,0.0])
+  set_payload(1.0)
+  set_tool_voltage(0)
+  set_safety_mode_transition_hardness(0)
+  global hook_index=1
+  global visionResult=2
+  global num_hooks=6
+  global hook_indexB=1
+  def _adminLinearIndex1():
+    $ 45 "_adminLinearIndex1" "noBreak"
+    $ 46 "Move_linear_slide_Index1"
+    $ 47 "var_1≔ False "
+    global var_1=  False  
+    $ 48 "Loop var_1≟ False "
+    while (var_1 ==   False  ):
+      $ 49 "var_1≔socket_open('10.241.34.44',4001)"
+      global var_1=socket_open("10.241.34.44",4001)
+    end
+    $ 50 "var_3≔1"
+    global var_3=1
+    $ 51 "Send≔'s r0x24 21'"
+    global Send="s r0x24 21"
+    $ 52 "socket_send_string(Send)"
+    socket_send_string(Send)
+    $ 53 "socket_send_byte(13)"
+    socket_send_byte(13)
+    $ 54 "Send_Reply≔socket_read_string()"
+    global Send_Reply=socket_read_string()
+    $ 55 "Send≔'s r0xca 0'"
+    global Send="s r0xca 0"
+    $ 56 "socket_send_string(Send)"
+    socket_send_string(Send)
+    $ 57 "socket_send_byte(13)"
+    socket_send_byte(13)
+    $ 58 "Send_Reply≔socket_read_string()"
+    global Send_Reply=socket_read_string()
+    $ 59 "Send≔'t 1'"
+    global Send="t 1"
+    $ 60 "socket_send_string(Send)"
+    socket_send_string(Send)
+    $ 61 "socket_send_byte(13)"
+    socket_send_byte(13)
+    $ 62 "Send_Reply≔socket_read_string()"
+    global Send_Reply=socket_read_string()
+    $ 63 "Loop var_3≠0"
+    while (var_3 != 0):
+      $ 64 "Send≔'g r0xA0'"
+      global Send="g r0xA0"
+      $ 65 "socket_send_string(Send)"
+      socket_send_string(Send)
+      $ 66 "socket_send_byte(13)"
+      socket_send_byte(13)
+      $ 67 "var_3≔socket_get_var('v')"
+      global var_3=socket_get_var("v")
+      $ 68 "Wait: 0.1"
+      sleep(0.1)
+    end
+    $ 69 "socket_close()"
+    socket_close()
+    $ 70 "sync()"
+    sync()
+  end
+  $ 1 "Robot Program"
+  $ 2 "Set DO[0]=Off"
+  set_standard_digital_out(0, False)
+  $ 3 "MoveJ"
+  $ 4 "pHome" "breakAfter"
+  movej(get_inverse_kin(p[.109082950196, -.486882174875, .431848860649, .000066681075, 3.141590264533, -.000149509436], qnear=[1.5706582069396973, -1.5708921591388147, 1.5709409713745117, -1.5709403196917933, -1.570793930684225, -9.566942323857575E-5]), a=3.490658503988659, v=3.141592653589793)
+  $ 5 "Call _adminLinearIndex1"
+  _adminLinearIndex1()
+  $ 6 "aboveRawInv" "breakAfter"
+  movej(get_inverse_kin(p[-.121786232584, -.606279281301, .139422753674, 2.221261359529, 2.217665806974, -.000977739222], qnear=[1.194810390472412, -1.0702593962298792, 1.7301440238952637, -2.2323673407184046, -1.5684807936297815, 1.19643235206604]), a=3.490658503988659, v=3.141592653589793)
+  $ 7 "MoveL"
+  $ 8 "atRawInv" "breakAfter"
+  movel(p[-.121937279570, -.606363839673, .040768603239, 2.222660763609, 2.215954383750, -.001053578933], a=1.2, v=0.25)
+  $ 9 "Set DO[0]=On"
+  set_standard_digital_out(0, True)
+  $ 10 "Wait: 1.0"
+  sleep(1.0)
+  $ 11 "aboveRawInv" "breakAfter"
+  movel(p[-.121786232584, -.606279281301, .139422753674, 2.221261359529, 2.217665806974, -.000977739222], a=1.2, v=0.25)
+  $ 12 "MoveJ"
+  $ 13 "pHome" "breakAfter"
+  movej(get_inverse_kin(p[.109082950196, -.486882174875, .431848860649, .000066681075, 3.141590264533, -.000149509436], qnear=[1.5706582069396973, -1.5708921591388147, 1.5709409713745117, -1.5709403196917933, -1.570793930684225, -9.566942323857575E-5]), a=3.490658503988659, v=3.141592653589793)
+  $ 14 "Call _adminLinearIndex1"
+  _adminLinearIndex1()
+  $ 15 "MoveJ"
+  $ 16 "ToScan" "breakAfter"
+  movej(get_inverse_kin(p[.399430769596, .006288144604, .431784453883, -.000009853640, -3.141468542051, -.000017201934], qnear=[2.880589485168457, -1.8141606489764612, 1.7823882102966309, -1.538901154194967, -1.570817772542135, 1.3097994327545166]), a=1.3962634015954636, v=1.0471975511965976)
+  $ 17 "ScanPos1" "breakAfter"
+  movej(get_inverse_kin(p[.623055946265, -.042325514018, .107793539215, .045571782693, -3.130765910211, .003840899025], qnear=[2.8987553119659424, -1.010620419179098, 1.7291598320007324, -2.2798131147967737, -1.5758398214923304, 1.2988728284835815]), a=1.3962634015954636, v=1.0471975511965976)
+  $ 18 "MoveL"
+  $ 19 "AboveScan" "breakAfter"
+  movel(p[.704910124442, -.041789061368, .088680071574, .045781458223, -3.130667688275, .003866764352], a=1.2, v=0.25)
+  $ 20 "AtScan" "breakAfter"
+  movel(p[.704920631595, -.041770134176, .058801186358, .045649709239, -3.130646765434, .003782781559], a=1.2, v=0.25)
+  $ 21 "Set DO[0]=Off"
+  set_standard_digital_out(0, False)
+  $ 22 "Wait: 1.0"
+  sleep(1.0)
+  $ 23 "AboveScan" "breakAfter"
+  movel(p[.704910124442, -.041789061368, .088680071574, .045781458223, -3.130667688275, .003866764352], a=1.2, v=0.25)
+  $ 24 "ScanPos1" "breakAfter"
+  movel(p[.623055946265, -.042325514018, .107793539215, .045571782693, -3.130765910211, .003840899025], a=1.2, v=0.25)
+  $ 25 "Script: vision_pc_modbus.script"
+  pc_ip = "10.241.34.37"
+  pc_port = 30002
+  
+  connection = socket_open(pc_ip, pc_port, "vision_socket")
+  
+  if (connection):
+      socket_send_string("run_vision", "vision_socket")
+      socket_close("vision_socket")
+  end
+  
+  timeout = 15.0
+  elapsed =0.0
+  visionResult = 0
+  while visionResult == 0 and elapsed < timeout:
+           sync()
+           sleep(0.2)
+           elapsed = elapsed + 0.2
+           visionResult = modbus_get_signal_status ("vision_result")
+           sync()
+  end
+  $ 26 "Wait: 2.0"
+  sleep(2.0)
+  $ 27 "MoveJ"
+  $ 28 "AboveScan" "breakAfter"
+  movej(get_inverse_kin(p[.704910124442, -.041789061368, .088680071574, .045781458223, -3.130667688275, .003866764352], qnear=[2.9277524948120117, -0.8300851027118128, 1.4594979286193848, -2.190455738698141, -1.5755999724017542, 1.3277345895767212]), a=1.3962634015954636, v=1.0471975511965976)
+  $ 29 "AtScan" "breakAfter"
+  movej(get_inverse_kin(p[.704920631595, -.041770134176, .058801186358, .045649709239, -3.130646765434, .003782781559], qnear=[2.927776575088501, -0.7868827025042933, 1.4716734886169434, -2.24579888979067, -1.5755522886859339, 1.3278424739837646]), a=1.3962634015954636, v=1.0471975511965976)
+  $ 30 "Set DO[0]=On"
+  set_standard_digital_out(0, True)
+  $ 31 "Wait: 1.0"
+  sleep(1.0)
+  $ 32 "AboveScan" "breakAfter"
+  movej(get_inverse_kin(p[.704910124442, -.041789061368, .088680071574, .045781458223, -3.130667688275, .003866764352], qnear=[2.9277524948120117, -0.8300851027118128, 1.4594979286193848, -2.190455738698141, -1.5755999724017542, 1.3277345895767212]), a=1.3962634015954636, v=1.0471975511965976)
+  $ 33 "MoveJ"
+  $ 34 "ScanPos1" "breakAfter"
+  movej(get_inverse_kin(p[.623055946265, -.042325514018, .107793539215, .045571782693, -3.130765910211, .003840899025], qnear=[2.8987553119659424, -1.010620419179098, 1.7291598320007324, -2.2798131147967737, -1.5758398214923304, 1.2988728284835815]), a=1.3962634015954636, v=1.0471975511965976)
+  $ 35 "ToScan" "breakAfter"
+  movej(get_inverse_kin(p[.399430769596, .006288144604, .431784453883, -.000009853640, -3.141468542051, -.000017201934], qnear=[2.880589485168457, -1.8141606489764612, 1.7823882102966309, -1.538901154194967, -1.570817772542135, 1.3097994327545166]), a=1.3962634015954636, v=1.0471975511965976)
+  $ 36 "pHome" "breakAfter"
+  movej(get_inverse_kin(p[.109082950196, -.486882174875, .431848860649, .000066681075, 3.141590264533, -.000149509436], qnear=[1.5706582069396973, -1.5708921591388147, 1.5709409713745117, -1.5709403196917933, -1.570793930684225, -9.566942323857575E-5]), a=1.3962634015954636, v=1.0471975511965976)
+  $ 37 "aboveRawInv" "breakAfter"
+  movej(get_inverse_kin(p[-.121786232584, -.606279281301, .139422753674, 2.221261359529, 2.217665806974, -.000977739222], qnear=[1.194810390472412, -1.0702593962298792, 1.7301440238952637, -2.2323673407184046, -1.5684807936297815, 1.19643235206604]), a=1.3962634015954636, v=1.0471975511965976)
+  $ 38 "MoveL"
+  $ 39 "atRawInv" "breakAfter"
+  movel(p[-.121937279570, -.606363839673, .040768603239, 2.222660763609, 2.215954383750, -.001053578933], a=1.2, v=0.25)
+  $ 40 "Set DO[0]=Off"
+  set_standard_digital_out(0, False)
+  $ 41 "Wait: 1.0"
+  sleep(1.0)
+  $ 42 "aboveRawInv" "breakAfter"
+  movel(p[-.121786232584, -.606279281301, .139422753674, 2.221261359529, 2.217665806974, -.000977739222], a=1.2, v=0.25)
+  $ 43 "MoveJ"
+  $ 44 "pHome" "breakAfter"
+  movej(get_inverse_kin(p[.109082950196, -.486882174875, .431848860649, .000066681075, 3.141590264533, -.000149509436], qnear=[1.5706582069396973, -1.5708921591388147, 1.5709409713745117, -1.5709403196917933, -1.570793930684225, -9.566942323857575E-5]), a=3.490658503988659, v=3.141592653589793)
+end

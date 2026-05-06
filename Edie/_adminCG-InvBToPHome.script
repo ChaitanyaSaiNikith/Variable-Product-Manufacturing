@@ -1,0 +1,116 @@
+def P_adminCGInvBToPHome():
+  set_gravity([0.0, 0.0, 9.82])
+  set_tcp(p[0.0,0.0,0.076,0.7245313926163333,-1.7654607319513724,1.7638170400690123])
+  set_payload(1.0)
+  step_count_7255f790_e5c2_467f_85cd_3e9cf15fcca6 = 0.0
+  thread Step_Counter_Thread_663b2e4f_e19b_465f_9f6b_c38d1401a853():
+    while (True):
+      step_count_7255f790_e5c2_467f_85cd_3e9cf15fcca6 = step_count_7255f790_e5c2_467f_85cd_3e9cf15fcca6 + 1.0
+      sync()
+    end
+  end
+  run Step_Counter_Thread_663b2e4f_e19b_465f_9f6b_c38d1401a853()
+  set_standard_analog_input_domain(0, 0)
+  set_standard_analog_input_domain(1, 0)
+  set_tool_analog_input_domain(0, 1)
+  set_tool_analog_input_domain(1, 1)
+  set_analog_outputdomain(0, 0)
+  set_analog_outputdomain(1, 0)
+  set_input_actions_to_default()
+  set_tool_voltage(0)
+  modbus_add_signal("127.0.0.1", 255, 1, 3, "MODBUS_1", False)
+  modbus_set_signal_update_frequency("MODBUS_1", 10)
+  modbus_add_signal("127.0.0.1", 255, 203, 3, "MODBUS_2", False)
+  modbus_set_signal_update_frequency("MODBUS_2", 10)
+  modbus_set_runstate_dependent_choice("MODBUS_1",0)
+  modbus_set_runstate_dependent_choice("MODBUS_2",0)
+  set_safety_mode_transition_hardness(0)
+  global stock_spacing=76.2
+  global Gravity_Feeder=p[0.26545424739685874,-0.423573422243878,0.3571526050789449,0.1619581347920129,-0.4133494768613531,-2.317499916011395]
+  global Linear_Slide=p[0.26542544581166166,-0.4235747955277341,0.35716918848305357,-0.010251867852105759,-0.0039919442596599315,-2.348075206071431]
+  # begin: URCap Installation Node
+  #   Source: VersaBuilt Robot2CNC, 2.0.9, VersaBuilt Robotics Inc.
+  #   Type: R2C Config
+  global vbSaveR2CIPAddr = "10.241.34.40"
+  global vbSaveDoor = "SingleDoor"
+  global vbSaveDoorSensors = True
+  global vbSaveDoorWaitTime = 0
+  global vbSaveViseSensors = True
+  # end: URCap Installation Node
+  def _adminLinearIndex2():
+    $ 14 "_adminLinearIndex2" "noBreak"
+    $ 15 "Move_linear_slide_Index2"
+    $ 16 "var_1≔ False "
+    global var_1=  False  
+    $ 17 "Loop var_1≟ False "
+    while (var_1 ==   False  ):
+      $ 18 "var_1≔socket_open('10.241.34.52',4001)"
+      global var_1=socket_open("10.241.34.52",4001)
+    end
+    $ 19 "var_3≔1"
+    global var_3=1
+    $ 20 "Send≔'s r0x24 21'"
+    global Send="s r0x24 21"
+    $ 21 "socket_send_string(Send)"
+    socket_send_string(Send)
+    $ 22 "socket_send_byte(13)"
+    socket_send_byte(13)
+    $ 23 "Send_Reply≔socket_read_string()"
+    global Send_Reply=socket_read_string()
+    $ 24 "Send≔'s r0xca 56389'"
+    global Send="s r0xca 56389"
+    $ 25 "socket_send_string(Send)"
+    socket_send_string(Send)
+    $ 26 "socket_send_byte(13)"
+    socket_send_byte(13)
+    $ 27 "Send_Reply≔socket_read_string()"
+    global Send_Reply=socket_read_string()
+    $ 28 "Send≔'t 1'"
+    global Send="t 1"
+    $ 29 "socket_send_string(Send)"
+    socket_send_string(Send)
+    $ 30 "socket_send_byte(13)"
+    socket_send_byte(13)
+    $ 31 "Send_Reply≔socket_read_string()"
+    global Send_Reply=socket_read_string()
+    $ 32 "Loop var_3≠0"
+    while (var_3 != 0):
+      $ 33 "Send≔'g r0xA0'"
+      global Send="g r0xA0"
+      $ 34 "socket_send_string(Send)"
+      socket_send_string(Send)
+      $ 35 "socket_send_byte(13)"
+      socket_send_byte(13)
+      $ 36 "var_3≔socket_get_var('v')"
+      global var_3=socket_get_var("v")
+      $ 37 "Wait: 0.1"
+      sleep(0.1)
+    end
+    $ 38 "socket_close()"
+    socket_close()
+    $ 39 "sync()"
+    sync()
+  end
+  $ 1 "Robot Program"
+  $ 2 "Set DO[0]=Off"
+  set_standard_digital_out(0, False)
+  $ 3 "Call _adminLinearIndex2"
+  _adminLinearIndex2()
+  $ 4 "MoveJ"
+  $ 5 "pHome" "breakAfter"
+  movej(get_inverse_kin(p[.267076834609, -.421525835552, .355862476785, 1.113969109756, 1.106099125929, .005090638018], qnear=[-0.7855265776263636, -1.5708921591388147, -1.5706747213946741, -1.5708921591388147, 1.5708000659942627, -7.18275653284195E-5]), a=1.3962634015954636, v=1.0471975511965976)
+  $ 6 "aboveInv" "breakAfter"
+  movej(get_inverse_kin(p[.446521526636, -.149612221141, .075741678801, 1.116319994819, 1.106736852294, -.001411909106], qnear=[-0.088996712361471, -1.7632716337787073, -2.144235436116354, -0.8087294737445276, 1.5696364641189575, 0.7013648152351379]), a=1.3962634015954636, v=1.0471975511965976)
+  $ 7 "MoveL"
+  $ 8 "atInv" "breakAfter"
+  movel(p[.445929041911, -.150176534561, -.017741570845, 1.116291951977, 1.106841493647, -.001527074423], a=1.2, v=0.25)
+  $ 9 "Set DO[0]=On"
+  set_standard_digital_out(0, True)
+  $ 10 "Wait: 1.0"
+  sleep(1.0)
+  $ 11 "aboveInv" "breakAfter"
+  movel(p[.446521526636, -.149612221141, .075741678801, 1.116319994819, 1.106736852294, -.001411909106], a=1.2, v=0.25)
+  $ 12 "MoveJ"
+  $ 13 "pHome" "breakAfter"
+  movej(get_inverse_kin(p[.267076834609, -.421525835552, .355862476785, 1.113969109756, 1.106099125929, .005090638018], qnear=[-0.7855265776263636, -1.5708921591388147, -1.5706747213946741, -1.5708921591388147, 1.5708000659942627, -7.18275653284195E-5]), a=1.7453292519943295, v=3.141592653589793)
+end

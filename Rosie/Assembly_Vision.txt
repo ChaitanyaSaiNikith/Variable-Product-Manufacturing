@@ -1,0 +1,291 @@
+ Program
+   BeforeStart
+     visionResult≔0
+   Robot Program
+     'Script: vision_pc_modbus.script'
+     Set DO[0]=Off
+     Set DO[1]=Off
+     If vision_result == 1
+       MoveJ
+         pHome
+         Call _adminLinearIndex3
+         aboveInvB
+       MoveL
+         atInvB
+         Set DO[0]=On
+         Wait: 1.0
+         aboveInvB
+       MoveJ
+         aboveVise
+       MoveL
+         atVise
+         Set DO[0]=Off
+         Wait: 1.0
+         aboveVise
+         Set DO[1]=On
+       MoveJ
+         pHome
+         Call _adminLinearIndex4
+         aboveHookA
+       Call hookA_manager
+       Call _adminLinearIndex3
+       MoveJ
+         aboveHookSlotA
+       MoveL
+         atHookSlotA
+         Set DO[0]=Off
+         Wait: 1.0
+         aboveHookSlotA
+       MoveJ
+         aboveInvA
+       MoveL
+         atInvA
+         Set DO[0]=On
+         Wait: 1.0
+         aboveInvA
+       MoveJ
+         lidAPosAbove
+       MoveL
+         lidAPos1
+         lidAPos2
+         Set DO[0]=Off
+         aboveVise
+         Set DO[0]=On
+       MoveL
+         AboveAsm1
+         AtAsm1
+         AboveAsm1
+         AboveAsm2
+         AtAsm2
+         AboveAsm2
+         AboveCloseHookA
+         AtCloseHookA
+         CloseHookA_1
+         CloseHookA_2
+         PressHookA
+         AbovePickA
+         Set DO[0]=Off
+         AtPickA
+         Set DO[1]=Off
+         Wait: 0.5
+         Set DO[0]=On
+         Wait: 1.0
+         AbovePickA
+       MoveJ
+         FinalAboveDropA
+         FinalAtDropA
+         Set DO[0]=Off
+         Wait: 1.0
+         FinalAboveDropA
+       MoveJ
+         pHome
+     ElseIf vision_result == 2
+       MoveJ
+         pHome
+         Call _adminLinearIndex3
+         aboveInvD
+       MoveL
+         atInvD
+         Set DO[0]=On
+         Wait: 1.0
+         aboveInvD
+       MoveJ
+         AboveVise_B
+       MoveL
+         AtVise_B
+         Set DO[0]=Off
+         Wait: 1.0
+         AboveVise_B
+         Set DO[1]=On
+       MoveJ
+         pHome
+         Call _adminLinearIndex4
+         AboveHookB
+       HookBManager
+         above_HookB≔p[-0.39636, -0.32475, 0.15692, 2.226, -2.216, 0.000]
+         offset_x≔hook_indexB * 0.047
+         above_pose_B≔pose_add(above_HookB, p[0.0, -offset_x, 0.0, 0.0, 0.0, 0.0])
+         at_pose_B≔pose_add(above_pose_B, p[0.0, 0.0, -0.10503, 0.0, 0.0, 0.0])
+         movel (get_inverse_kin(above_pose_B))
+         movel (get_inverse_kin(at_pose_B))
+         Set DO[0]=On
+         Wait: 1.0
+         movel (get_inverse_kin(above_pose_B), a = 0.5, v = 0.1)
+         movej (get_inverse_kin(above_HookB))
+         hook_indexB≔hook_indexB + 1
+         If hook_index ≥ num_hooks
+           hook_indexB≔0
+           Popup: All Hook_B's were used! Reload Fixture
+       Call _adminLinearIndex3
+       MoveJ
+         AboveHookSlotB
+       MoveL
+         AtHookSlotB
+         Set DO[0]=Off
+         Wait: 1.0
+         AboveHookSlotB
+       MoveJ
+         aboveInvC
+       MoveL
+         atInvC
+         Set DO[0]=On
+         Wait: 1.0
+         aboveInvC
+       MoveJ
+         lidBPosAbove
+       MoveL
+         LidBPos1
+         LidBPos2
+         Set DO[0]=Off
+         Wait: 1.0
+         AboveVise_B
+         Set DO[0]=On
+       MoveL
+         AboveAsmB1
+         AtAsmB1
+         AboveAsmB1
+         AboveAsmB2
+         AtAsmB2
+         AboveAsmB2
+         ToCloseHook
+         AboveHookClose
+         AtHookClose
+         HookClose
+         CloseHookPos1
+         CloseHookPos2
+       MoveL
+         AboveVise
+         Set DO[0]=Off
+         AtPickB
+         Set DO[1]=Off
+         Wait: 1.0
+         Set DO[0]=On
+         Wait: 1.0
+         AboveVise_B
+       MoveJ
+         FinalAboveDropB
+         FinalAtDropB
+         Set DO[0]=Off
+         Wait: 1.0
+         FinalAboveDropB
+       MoveJ
+         pHome
+   hookA_manager
+     above_HookA≔p[-0.27970, -0.32422, 0.12715, 2.226, -2.216, 0.000]
+     offset_x≔hook_index * 0.047
+     above_pose_A≔pose_add(above_HookA, p[0.0, -offset_x, 0.0, 0.0, 0.0, 0.0])
+     at_pose_A≔pose_add(above_pose_A, p[0.0, 0.0, -0.086, 0.0, 0.0, 0.0])
+     movel (get_inverse_kin(above_pose_A))
+     movel (get_inverse_kin(at_pose_A))
+     Set DO[0]=On
+     Wait: 1.0
+     movel (get_inverse_kin(above_pose_A), a = 0.5, v = 0.1)
+     movej (get_inverse_kin(above_HookA))
+     hook_index≔hook_index + 1
+     If hook_index ≥ num_hooks
+       hook_index≔0
+       Popup: All Hook_A's were used! Reload Fixture
+   _adminLinearIndex4
+     Move_linear_slide_Index1
+       var_1≔ False 
+       Loop var_1≟ False 
+         var_1≔socket_open("10.241.34.44",4001)
+       var_3≔1
+       Send≔"s r0x24 21"
+       socket_send_string(Send)
+       socket_send_byte(13)
+       Send_Reply≔socket_read_string()
+       Send≔"s r0xca 155904"
+       socket_send_string(Send)
+       socket_send_byte(13)
+       Send_Reply≔socket_read_string()
+       Send≔"t 1"
+       socket_send_string(Send)
+       socket_send_byte(13)
+       Send_Reply≔socket_read_string()
+       Loop var_3≠0
+         Send≔"g r0xA0"
+         socket_send_string(Send)
+         socket_send_byte(13)
+         var_3≔socket_get_var("v")
+         Wait: 0.1
+       socket_close()
+       sync()
+   _adminLinearIndex3
+     Move_linear_slide_Index1
+       var_1≔ False 
+       Loop var_1≟ False 
+         var_1≔socket_open("10.241.34.44",4001)
+       var_3≔1
+       Send≔"s r0x24 21"
+       socket_send_string(Send)
+       socket_send_byte(13)
+       Send_Reply≔socket_read_string()
+       Send≔"s r0xca 103936"
+       socket_send_string(Send)
+       socket_send_byte(13)
+       Send_Reply≔socket_read_string()
+       Send≔"t 1"
+       socket_send_string(Send)
+       socket_send_byte(13)
+       Send_Reply≔socket_read_string()
+       Loop var_3≠0
+         Send≔"g r0xA0"
+         socket_send_string(Send)
+         socket_send_byte(13)
+         var_3≔socket_get_var("v")
+         Wait: 0.1
+       socket_close()
+       sync()
+   _adminLinearIndex2
+     Move_linear_slide_Index2
+       var_1≔ False 
+       Loop var_1≟ False 
+         var_1≔socket_open("10.241.34.44",4001)
+       var_3≔1
+       Send≔"s r0x24 21"
+       socket_send_string(Send)
+       socket_send_byte(13)
+       Send_Reply≔socket_read_string()
+       Send≔"s r0xca 51968"
+       socket_send_string(Send)
+       socket_send_byte(13)
+       Send_Reply≔socket_read_string()
+       Send≔"t 1"
+       socket_send_string(Send)
+       socket_send_byte(13)
+       Send_Reply≔socket_read_string()
+       Loop var_3≠0
+         Send≔"g r0xA0"
+         socket_send_string(Send)
+         socket_send_byte(13)
+         var_3≔socket_get_var("v")
+         Wait: 0.1
+       socket_close()
+       sync()
+   _adminLinearIndex5
+     Move_linear_slide_Index5
+       var_1≔ False 
+       Loop var_1≟ False 
+         var_1≔socket_open("10.241.34.44",4001)
+       var_3≔1
+       Send≔"s r0x24 21"
+       socket_send_string(Send)
+       socket_send_byte(13)
+       Send_Reply≔socket_read_string()
+       Send≔"s r0xca 190000"
+       socket_send_string(Send)
+       socket_send_byte(13)
+       Send_Reply≔socket_read_string()
+       Send≔"t 1"
+       socket_send_string(Send)
+       socket_send_byte(13)
+       Send_Reply≔socket_read_string()
+       Loop var_3≠0
+         Send≔"g r0xA0"
+         socket_send_string(Send)
+         socket_send_byte(13)
+         var_3≔socket_get_var("v")
+         Wait: 0.1
+       socket_close()
+       sync()

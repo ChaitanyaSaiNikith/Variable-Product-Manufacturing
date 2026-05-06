@@ -1,0 +1,109 @@
+def P_adminCGConveyorToPHome():
+  set_gravity([0.0, 0.0, 9.82])
+  set_safety_mode_transition_hardness(0)
+  set_tool_voltage(0)
+  set_standard_analog_input_domain(0, 0)
+  set_standard_analog_input_domain(1, 0)
+  set_tool_analog_input_domain(0, 0)
+  set_tool_analog_input_domain(1, 0)
+  set_analog_outputdomain(0, 0)
+  set_analog_outputdomain(1, 0)
+  set_input_actions_to_default()
+  step_count_c845b393_e0fd_4f4d_9870_11c819ff408d = 0.0
+  thread Step_Counter_Thread_ce22dbba_bdca_4c4c_b525_62edb9bf68c2():
+    while (True):
+      step_count_c845b393_e0fd_4f4d_9870_11c819ff408d = step_count_c845b393_e0fd_4f4d_9870_11c819ff408d + 1.0
+      sync()
+    end
+  end
+  run Step_Counter_Thread_ce22dbba_bdca_4c4c_b525_62edb9bf68c2()
+  set_tcp(p[0.0,0.0,0.2159,0.0,0.0,0.0])
+  set_payload(1.0)
+  global cnc_prog_num=10023
+  global GravityFeeder=p[-0.4245306274548594,-0.2650331812928262,0.21564199084256747,-0.3334943540033622,0.12408789793947973,-0.782689583063839]
+  # begin: URCap Installation Node
+  #   Source: VersaBuilt Robot2CNC, 2.0.9, VersaBuilt Robotics Inc.
+  #   Type: R2C Config
+  global vbSaveR2CIPAddr = "10.241.34.39"
+  global vbSaveDoor = "SingleDoor"
+  global vbSaveDoorSensors = True
+  global vbSaveDoorWaitTime = 0
+  global vbSaveViseSensors = True
+  # end: URCap Installation Node
+  def _adminLinearIndex1():
+    $ 14 "_adminLinearIndex1" "noBreak"
+    $ 15 "Move_linear_slide_Index1"
+    $ 16 "var_1≔ False "
+    global var_1=  False  
+    $ 17 "Loop var_1≟ False "
+    while (var_1 ==   False  ):
+      $ 18 "var_1≔socket_open('10.241.34.48',4001)"
+      global var_1=socket_open("10.241.34.48",4001)
+    end
+    $ 19 "var_3≔1"
+    global var_3=1
+    $ 20 "Send≔'s r0x24 21'"
+    global Send="s r0x24 21"
+    $ 21 "socket_send_string(Send)"
+    socket_send_string(Send)
+    $ 22 "socket_send_byte(13)"
+    socket_send_byte(13)
+    $ 23 "Send_Reply≔socket_read_string()"
+    global Send_Reply=socket_read_string()
+    $ 24 "Send≔'s r0xca 0'"
+    global Send="s r0xca 0"
+    $ 25 "socket_send_string(Send)"
+    socket_send_string(Send)
+    $ 26 "socket_send_byte(13)"
+    socket_send_byte(13)
+    $ 27 "Send_Reply≔socket_read_string()"
+    global Send_Reply=socket_read_string()
+    $ 28 "Send≔'t 1'"
+    global Send="t 1"
+    $ 29 "socket_send_string(Send)"
+    socket_send_string(Send)
+    $ 30 "socket_send_byte(13)"
+    socket_send_byte(13)
+    $ 31 "Send_Reply≔socket_read_string()"
+    global Send_Reply=socket_read_string()
+    $ 32 "Loop var_3≠0"
+    while (var_3 != 0):
+      $ 33 "Send≔'g r0xA0'"
+      global Send="g r0xA0"
+      $ 34 "socket_send_string(Send)"
+      socket_send_string(Send)
+      $ 35 "socket_send_byte(13)"
+      socket_send_byte(13)
+      $ 36 "var_3≔socket_get_var('v')"
+      global var_3=socket_get_var("v")
+      $ 37 "Wait: 0.1"
+      sleep(0.1)
+    end
+    $ 38 "socket_close()"
+    socket_close()
+    $ 39 "sync()"
+    sync()
+  end
+  $ 1 "Robot Program"
+  $ 2 "Set DO[0]=Off"
+  set_standard_digital_out(0, False)
+  $ 3 "Call _adminLinearIndex1"
+  _adminLinearIndex1()
+  $ 4 "MoveJ"
+  $ 5 "pHome" "breakAfter"
+  movej(get_inverse_kin(p[-.424167511760, -.264274277689, .215856765742, -1.197344986937, -2.891696132232, -.008438427288], qnear=[3.926896572113037, -1.570916000996725, -1.5708892981158655, -1.571047608052389, 1.5578324794769287, -3.4791627992802887E-4]), a=1.3962634015954636, v=1.0471975511965976)
+  $ 6 "aboveConveyor" "breakAfter"
+  movej(get_inverse_kin(p[.580867329713, .170524736504, .010508536564, 2.902981418349, -1.199667479887, -.002123688497], qnear=[0.46648672223091125, -1.93504506746401, -1.675986115132467, -1.102614704762594, 1.5714974403381348, -0.3205512205706995]), a=1.3962634015954636, v=1.0471975511965976)
+  $ 7 "MoveL"
+  $ 8 "atConveyor" "breakAfter"
+  movel(p[.577856408163, .166296754961, -.063417425482, 2.903664596496, -1.199155732549, -.002812698724], a=1.2, v=0.25)
+  $ 9 "Set DO[0]=On"
+  set_standard_digital_out(0, True)
+  $ 10 "Wait: 1.0"
+  sleep(1.0)
+  $ 11 "aboveConveyor" "breakAfter"
+  movel(p[.580867329713, .170524736504, .010508536564, 2.902981418349, -1.199667479887, -.002123688497], a=1.2, v=0.25)
+  $ 12 "MoveJ"
+  $ 13 "pHome" "breakAfter"
+  movej(get_inverse_kin(p[-.424167511760, -.264274277689, .215856765742, -1.197344986937, -2.891696132232, -.008438427288], qnear=[3.926896572113037, -1.570916000996725, -1.5708892981158655, -1.571047608052389, 1.5578324794769287, -3.4791627992802887E-4]), a=1.3962634015954636, v=1.0471975511965976)
+end
